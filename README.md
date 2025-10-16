@@ -36,7 +36,7 @@ Aplicativo Python completo para análise estatística e probabilística dos dado
 ### Instalação
 ```bash
 # 1. Clone ou baixe o projeto
-git clone [URL_DO_PROJETO]
+git clone https://github.com/delcain/MegaSena
 cd megasena
 
 # 2. Instale as dependências
