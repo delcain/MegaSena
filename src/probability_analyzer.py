@@ -1,6 +1,9 @@
 """
 Módulo de análise probabilística da Mega Sena.
 Calcula probabilidades específicas, repetições e estratégias.
+
+MIT License - Copyright (c) 2025 delcain
+Veja LICENSE para detalhes completos.
 """
 
 import math

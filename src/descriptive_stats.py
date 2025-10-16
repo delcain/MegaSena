@@ -1,6 +1,9 @@
 """
 Módulo de estatística descritiva para análise da Mega Sena.
 Analisa frequências, cria histogramas e identifica padrões.
+
+MIT License - Copyright (c) 2025 delcain
+Veja LICENSE para detalhes completos.
 """
 
 import numpy as np

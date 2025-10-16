@@ -1,6 +1,9 @@
 """
 Aplicativo principal de análise da Mega Sena.
 Interface que integra todos os módulos de análise.
+
+MIT License - Copyright (c) 2025 delcain
+Veja LICENSE para detalhes completos.
 """
 
 import sys

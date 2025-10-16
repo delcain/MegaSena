@@ -1,6 +1,9 @@
 """
 Módulo de teoria probabilística avançada para Mega Sena.
 Implementa simulações Monte Carlo, análises de distribuições e modelagem estocástica.
+
+MIT License - Copyright (c) 2025 delcain
+Veja LICENSE para detalhes completos.
 """
 
 import random

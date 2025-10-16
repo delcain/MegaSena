@@ -143,6 +143,33 @@ megasena/
 - Jogue com responsabilidade
 - O software não incentiva apostas excessivas
 
+## 🚨 ISENÇÃO DE RESPONSABILIDADE
+
+**IMPORTANTE: O autor deste software NÃO SE RESPONSABILIZA por qualquer dano, perda, prejuízo, consequência ou resultado de qualquer natureza que possa decorrer do uso deste aplicativo, em qualquer esfera jurídica (civil, criminal, administrativa, trabalhista, tributária, etc.) e em qualquer país ou jurisdição.**
+
+### Limitações de Responsabilidade:
+
+- ❌ **Nenhuma garantia** de precisão dos resultados ou análises
+- ❌ **Nenhuma responsabilidade** por perdas financeiras decorrentes do uso
+- ❌ **Nenhuma obrigação** por decisões tomadas com base nas informações fornecidas
+- ❌ **Nenhuma garantia** de funcionamento contínuo ou livre de erros
+- ❌ **Nenhuma responsabilidade** por problemas técnicos ou falhas do sistema
+
+### Uso por Sua Conta e Risco:
+
+- ⚠️ O usuário assume **total responsabilidade** pelo uso do software
+- ⚠️ Todas as decisões baseadas nas análises são de **responsabilidade exclusiva** do usuário
+- ⚠️ O software é fornecido **"como está"** sem garantias de qualquer tipo
+- ⚠️ Recomenda-se **sempre** consultar profissionais qualificados para decisões importantes
+
+### Conformidade Legal:
+
+- 📋 O usuário deve verificar a **legalidade** dos jogos de loteria em sua jurisdição
+- 📋 É responsabilidade do usuário cumprir todas as **leis locais** aplicáveis
+- 📋 O autor não fornece **aconselhamento legal** ou financeiro
+
+**AO USAR ESTE SOFTWARE, VOCÊ CONCORDA COM ESTA ISENÇÃO DE RESPONSABILIDADE E ASSUME TODOS OS RISCOS ASSOCIADOS AO SEU USO.**
+
 ## 🎓 Valor Educacional
 
 Este projeto demonstra aplicações práticas de:
@@ -162,6 +189,17 @@ Após usar o aplicativo, você será capaz de:
 - Gerar previsões baseadas em dados históricos
 - Compreender conceitos de aleatoriedade e uniformidade
 
+## 📄 Licença
+
+Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para detalhes completos.
+
+### 📋 Resumo da Licença MIT:
+- ✅ **Uso livre** para qualquer finalidade (pessoal, educacional, comercial)
+- ✅ **Modificação** e **distribuição** permitidas
+- ✅ **Código aberto** mas sem obrigatoriedade para derivados
+- ✅ **Proteção legal** completa para o autor
+- ⚠️ **Sem garantias** - software fornecido "como está"
+
 ## 🤝 Contribuições
 
 Contribuições são bem-vindas! Áreas para melhoria:
@@ -171,6 +209,13 @@ Contribuições são bem-vindas! Áreas para melhoria:
 - Otimizações de performance
 - Testes automatizados
 
+### Como Contribuir:
+1. Fork este repositório
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-analise`)
+3. Commit suas mudanças (`git commit -am 'Adiciona nova análise'`)
+4. Push para a branch (`git push origin feature/nova-analise`)
+5. Abra um Pull Request
+
 ## 📞 Suporte
 
 Para dúvidas sobre o código ou funcionalidades:
@@ -178,6 +223,32 @@ Para dúvidas sobre o código ou funcionalidades:
 2. Execute `python demo.py` para ver exemplos
 3. Verifique os comentários no código fonte
 
+## 📊 Copyright e Atribuição
+
+```
+MIT License
+
+Copyright (c) 2025 delcain
+
+Este software é fornecido "como está", sem garantias de qualquer tipo.
+Veja LICENSE para termos completos.
+```
+
+## 🎖️ Reconhecimentos
+
+**Bibliotecas utilizadas:**
+- [Pandas](https://pandas.pydata.org/) - BSD License
+- [NumPy](https://numpy.org/) - BSD License
+- [Matplotlib](https://matplotlib.org/) - PSF License
+- [Seaborn](https://seaborn.pydata.org/) - BSD License
+- [Requests](https://requests.readthedocs.io/) - Apache 2.0
+- [SciPy](https://scipy.org/) - BSD License
+
+**Fonte de dados:**
+- [Caixa Econômica Federal](https://loterias.caixa.gov.br/) - Dados públicos oficiais
+
 ---
 
 **Desenvolvido para demonstrar o poder da análise estatística aplicada a jogos de loteria 📊🎲**
+
+*Licensed under MIT License - See [LICENSE](LICENSE) for details*

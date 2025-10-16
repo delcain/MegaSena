@@ -1,6 +1,9 @@
 """
 Módulo para coleta de dados históricos da Mega Sena.
 Obtém dados da fonte oficial da Caixa Econômica Federal.
+
+MIT License - Copyright (c) 2025 delcain
+Veja LICENSE para detalhes completos.
 """
 
 import requests
