@@ -532,28 +532,7 @@ class MegaSenaApp:
             
             if combinations_drawn > 0:
                 self.print_colored("   ⚠️  ATENÇÃO: Algumas combinações já foram sorteadas!", "yellow")
-            
-            # Análise detalhada de cada previsão
-            print(f"\n📊 ANÁLISE DETALHADA:")
-            for combo_analysis in history_analysis['combinations_analysis']:
-                jogo_num = combo_analysis['prediction_number']
-                drawn_count = combo_analysis['drawn_numbers_count']
-                never_drawn_count = combo_analysis['never_drawn_count']
-                avg_freq = combo_analysis['average_frequency']
-                
-                status_icon = "🔴" if combo_analysis['combination_already_drawn'] else "🟢"
-                
-                print(f"   {status_icon} Jogo {jogo_num}:")
-                print(f"      📈 Números já sorteados: {drawn_count}/6")
-                print(f"      🆕 Números inéditos: {never_drawn_count}/6")
-                print(f"      📊 Frequência média: {avg_freq:.1f}")
-                
-                if combo_analysis['combination_already_drawn']:
-                    print(f"      ⚠️  Esta combinação JÁ FOI SORTEADA!")
-                
-                if never_drawn_count > 0:
-                    never_drawn_str = " - ".join(f"{n:02d}" for n in combo_analysis['never_drawn_numbers'])
-                    print(f"      🔢 Números inéditos: {never_drawn_str}")
+                        
             
             print(f"\n📊 RESUMO GERAL:")
             all_predicted = [num for pred in predictions for num in pred]
