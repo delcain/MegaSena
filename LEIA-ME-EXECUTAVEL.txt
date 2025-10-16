@@ -1,0 +1,75 @@
+# 🎰 MEGA SENA ANALYZER - EXECUTÁVEL WINDOWS
+
+## ⚡ INÍCIO RÁPIDO
+
+### 1. Execute o programa:
+```
+MegaSenaAnalyzer.exe
+```
+
+### 2. Primeira execução:
+- ⏱️ Aguarde 30-60 segundos (inicialização)
+- 🛡️ Antivírus pode solicitar permissão (clique "Permitir")
+- 📥 Dados serão baixados automaticamente
+
+### 3. Menu principal:
+```
+📊 MENU PRINCIPAL:
+1. 📥 Atualizar dados históricos
+2. 📈 Análise de probabilidades  
+3. 📊 Estatísticas descritivas
+4. 🎯 Análise probabilística avançada
+5. 🔮 Gerar previsões ⭐ NOVO!
+6. 📋 Relatório completo
+7. ℹ️  Informações dos dados
+8. 💰 Configurar valor do jogo
+0. 🚪 Sair
+```
+
+## 🎯 FUNCIONALIDADES PRINCIPAIS
+
+### ⭐ **NOVA: Gerar Previsões (Opção 5)**
+- 🎲 Múltiplas estratégias de previsão
+- 🔍 **Análise histórica automática**
+- ✅ Verifica se números já foram sorteados
+- 📊 Mostra frequência histórica
+- 🆕 Identifica números inéditos
+
+### 📈 **Análise de Probabilidades (Opção 2)**
+- 🎯 Cálculo de chances reais
+- 💰 Análise de investimento com ROI
+- ⚖️ Distribuições par/ímpar
+- 🔢 Números mais/menos frequentes
+
+### 📊 **Estatísticas Descritivas (Opção 3)**
+- 📈 Frequência de cada número
+- ⏰ Análise de atrasos
+- 🎨 Gráficos automáticos
+- 🔍 Padrões e correlações
+
+## 💻 REQUISITOS
+
+- ✅ Windows 7/8/10/11
+- ✅ Conexão com internet (para dados)
+- ✅ ~100MB de espaço livre
+- ❌ Python NÃO é necessário
+
+## ⚠️ IMPORTANTE
+
+- 🎓 **Software educacional** - Para estudo de estatística
+- 📊 **Análise histórica** - Não garante resultados futuros
+- 🎲 **Jogue com responsabilidade**
+- 🛡️ **MIT License** - Uso livre e gratuito
+
+## 🚀 DICA DE USO
+
+1. Execute opção **1** primeiro (atualizar dados)
+2. Use opção **5** para gerar previsões com análise
+3. Veja opção **2** para entender probabilidades
+4. Salve relatório com opção **6**
+
+---
+
+**Desenvolvido para demonstrar análise estatística em loterias** 📊🎲
+
+*MIT License - Copyright (c) 2025 delcain*
