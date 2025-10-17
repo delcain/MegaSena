@@ -20,6 +20,8 @@ try:
     from src.probability_analyzer import MegaSenaProbabilityAnalyzer
     from src.descriptive_stats import MegaSenaStatistics
     from src.advanced_analytics import MegaSenaAdvancedAnalytics
+    from src.time_series_analyzer import MegaSenaTimeSeriesAnalyzer
+    from src.game_theory_analyzer import MegaSenaGameTheoryAnalyzer
 except ImportError as e:
     print(f"Erro ao importar módulos: {e}")
     print("Certifique-se de que todas as dependências estão instaladas:")
@@ -40,8 +42,10 @@ class MegaSenaApp:
     def __init__(self):
         self.collector = MegaSenaDataCollector()
         self.probability_analyzer = MegaSenaProbabilityAnalyzer()
-        self.statistics = MegaSenaStatistics()
+        self.stats = MegaSenaStatistics()
         self.advanced_analytics = MegaSenaAdvancedAnalytics()
+        self.time_series_analyzer = MegaSenaTimeSeriesAnalyzer()
+        self.game_theory_analyzer = MegaSenaGameTheoryAnalyzer()
         self.historical_data = []
         self.data_loaded = False
     
@@ -74,15 +78,17 @@ class MegaSenaApp:
     def print_menu(self):
         """Exibe o menu principal."""
         self.print_header("MEGA SENA - ANÁLISE PROBABILÍSTICA")
-        print("\n📊 MENU PRINCIPAL:")
+        print("📊 MENU PRINCIPAL:")
         print("1. 📥 Atualizar dados históricos")
         print("2. 📈 Análise de probabilidades")
         print("3. 📊 Estatísticas descritivas")
         print("4. 🎯 Análise probabilística avançada")
         print("5. 🔮 Gerar previsões")
-        print("6. 📋 Relatório completo")
-        print("7. ℹ️  Informações dos dados")
-        print("8. 💰 Configurar valor do jogo")
+        print("6. 🕒 Análise de séries temporais")
+        print("7. 🎲 Teoria de jogos e estratégias ⭐ NOVO!")
+        print("8. � Relatório completo")
+        print("9. ℹ️  Informações dos dados")
+        print("10. 💰 Configurar valor do jogo")
         print("0. 🚪 Sair")
         print()
     
@@ -188,6 +194,287 @@ class MegaSenaApp:
         print(f"   🎯 Retorno esperado: R$ {investment['retorno_esperado']['total']:.2f}")
         print(f"   📈 ROI esperado: {investment['analise_roi']['roi_percent']:.2f}%")
         print(f"   🎰 Jogos necessários para sena esperada: {investment['analise_roi']['jogos_para_sena_esperada']:,.0f}")
+    
+    def game_theory_analysis(self):
+        """Executa análise de teoria de jogos e estratégias."""
+        self.print_header("TEORIA DE JOGOS E ESTRATÉGIAS")
+        
+        if not self.load_data():
+            return
+        
+        try:
+            # Perguntar quantas dezenas o jogador quer jogar
+            print("🎲 Configuração da Estratégia")
+            print("=" * 40)
+            print("A Mega Sena permite jogar de 6 a 15 números.")
+            print("Mais números = mais chances, mas custa mais caro.")
+            print()
+            
+            while True:
+                try:
+                    dezenas_str = input("🎯 Quantas dezenas você gostaria de jogar? (6-15): ").strip()
+                    dezenas = int(dezenas_str)
+                    
+                    if 6 <= dezenas <= 15:
+                        break
+                    else:
+                        self.print_colored("❌ Número inválido! Digite um valor entre 6 e 15.", "red")
+                        
+                except ValueError:
+                    self.print_colored("❌ Por favor, digite um número válido!", "red")
+            
+            print(f"\n✅ Configurado para jogar com {dezenas} números")
+            
+            # Calcular custo do jogo
+            cost_info = self.probability_analyzer.calculate_game_cost(dezenas)
+            if cost_info:
+                print(f"💰 Custo total: R$ {cost_info['total_cost']:.2f}")
+                print(f"📊 Número de jogos: {cost_info['combinations']:,}")
+                if cost_info['combinations'] > 1:
+                    print(f"💡 Suas chances melhoram {cost_info['combinations']}x comparado ao jogo simples!")
+                print()
+            
+            print("🎲 Executando análise de teoria de jogos...")
+            print("📊 Esta análise pode levar alguns minutos...")
+            print()
+            
+            # Configurar o analisador com o número de dezenas escolhido
+            self.game_theory_analyzer.target_numbers = dezenas
+            
+            # Gerar relatório completo
+            report = self.game_theory_analyzer.generate_game_theory_report(self.historical_data)
+            
+            # Exibir resumo executivo
+            summary = report['summary']
+            self.print_colored("📋 RESUMO EXECUTIVO:", "cyan")
+            print(f"   📊 Sorteios analisados: {summary['total_sorteios_analisados']:,}")
+            print(f"   🎯 Estratégias geradas: {summary['numero_estrategias_geradas']}")
+            print(f"   📈 Melhor Sharpe Ratio: {summary['melhor_portfolio_sharpe']:.3f}")
+            print(f"   🏆 Recomendação: {summary['estrategia_recomendada']}")
+            print()
+            
+            # Estratégias otimizadas
+            self.print_colored("🎯 ESTRATÉGIAS OTIMIZADAS:", "cyan")
+            for name, strategy in report['optimal_strategies'].items():
+                print(f"   📊 {name.replace('_', ' ').title()}: {strategy['numbers']}")
+                print(f"      📝 {strategy['description']}")
+                if 'correlation_score' in strategy:
+                    print(f"      📈 Score correlação: {strategy['correlation_score']:.3f}")
+                print()
+            
+            # Equilíbrio de Nash
+            self.print_colored("⚖️ EQUILÍBRIO DE NASH:", "cyan")
+            for player, strategy in report['nash_equilibrium'].items():
+                print(f"   🎯 Jogador {player}: {strategy['numbers']}")
+                print(f"      📊 Utilidade: {strategy['utility']:.3f}")
+                weights = strategy['strategy_weights']
+                print(f"      ⚖️ Pesos: Freq={weights['freq_weight']}, Corr={weights['corr_weight']}")
+                print()
+            
+            # Estratégia Minimax
+            minimax = report['minimax_strategy']
+            self.print_colored("🛡️ ESTRATÉGIA MINIMAX (Menor Risco):", "cyan")
+            print(f"   📊 Números: {minimax['numbers']}")
+            print(f"   ⚠️ Risco máximo: {minimax['max_risk']:.3f}")
+            print(f"   📝 {minimax['description']}")
+            print()
+            
+            # Portfolio otimizado
+            if report['portfolio_optimization']:
+                self.print_colored("💼 PORTFÓLIOS OTIMIZADOS:", "cyan")
+                for i, portfolio in enumerate(report['portfolio_optimization'][:3]):
+                    print(f"   📈 Portfólio #{portfolio['combination']}: {portfolio['numbers']}")
+                    print(f"      📊 Retorno esperado: {portfolio['expected_return']:.3f}")
+                    print(f"      ⚠️ Risco: {portfolio['risk']:.3f}")
+                    print(f"      📈 Sharpe Ratio: {portfolio['sharpe_ratio']:.3f}")
+                    print()
+            
+            # Estratégia por clusters
+            cluster = report['cluster_strategy']
+            self.print_colored("🎯 ESTRATÉGIA POR CLUSTERS:", "cyan")
+            print(f"   📊 Números: {cluster['numbers']}")
+            print(f"   🔄 Clusters utilizados: {cluster['n_clusters']}")
+            print(f"   📝 {cluster['description']}")
+            print()
+            
+            # Análise de correlações
+            correlations = report['correlation_insights']
+            if correlations:
+                self.print_colored("🔗 INSIGHTS DE CORRELAÇÃO:", "cyan")
+                print(f"   📊 Correlação média: {correlations['average_correlation']:.4f}")
+                print(f"   📏 Desvio padrão: {correlations['correlation_std']:.4f}")
+                
+                print("   🔴 Pares mais correlacionados:")
+                for pair_data in correlations['most_positively_correlated'][-3:]:
+                    pair, corr = pair_data['pair'], pair_data['correlation']
+                    print(f"      📊 {pair[0]}-{pair[1]}: {corr:.4f}")
+                
+                print("   🔵 Pares menos correlacionados:")
+                for pair_data in correlations['most_negatively_correlated'][:3]:
+                    pair, corr = pair_data['pair'], pair_data['correlation']
+                    print(f"      📊 {pair[0]}-{pair[1]}: {corr:.4f}")
+                print()
+            
+            # Comparação de estratégias
+            comparison = report['strategy_comparison']
+            self.print_colored("🏆 RECOMENDAÇÃO FINAL:", "cyan")
+            recommendation = comparison['recommendation']
+            print(f"   🎯 Estratégia recomendada: {recommendation['recommended_strategy']}")
+            print(f"   📊 Números: {recommendation['recommended_numbers']}")
+            max_score = recommendation.get('max_score', 17)
+            print(f"   ⭐ Score: {recommendation['score']:.1f}/{max_score}")
+            print(f"   📝 Critério: {recommendation['reasoning']}")
+            print()
+            
+            # Diversidade entre estratégias
+            total_unique = comparison['total_unique_numbers']
+            print(f"   🌟 Total de números únicos nas estratégias: {total_unique}")
+            print()
+            
+            # Informações do jogo escolhido
+            if dezenas > 6:
+                self.print_colored("💡 DICA PARA SEU JOGO:", "yellow")
+                recommended_numbers = recommendation['recommended_numbers']
+                if len(recommended_numbers) >= dezenas:
+                    suggested = recommended_numbers[:dezenas]
+                else:
+                    # Completar com números adicionais das outras estratégias
+                    all_strategy_numbers = set()
+                    for strategy_numbers in comparison['strategies'].values():
+                        all_strategy_numbers.update(strategy_numbers)
+                    remaining = list(all_strategy_numbers - set(recommended_numbers))
+                    suggested = recommended_numbers + remaining[:dezenas - len(recommended_numbers)]
+                
+                print(f"   🎲 Para {dezenas} números, sugerimos: {sorted(suggested[:dezenas])}")
+                print(f"   💰 Custo: R$ {cost_info['total_cost']:.2f}")
+                print(f"   🎯 {cost_info['combinations']:,} combinações diferentes")
+                print()
+            
+            # Gerar gráficos
+            self.print_colored("📊 GRÁFICOS GERADOS:", "cyan")
+            try:
+                plots = self.game_theory_analyzer.create_game_theory_plots()
+                if plots:
+                    for plot in plots:
+                        filename = plot.split('\\')[-1] if '\\' in plot else plot.split('/')[-1]
+                        print(f"   📈 {filename}")
+                    print(f"✅ {len(plots)} gráficos salvos em data/plots/game_theory/")
+                else:
+                    print("   ⚠️ Nenhum gráfico foi gerado")
+            except Exception as e:
+                print(f"   ⚠️ Erro ao gerar gráficos: {e}")
+            
+        except Exception as e:
+            self.print_colored(f"❌ Erro na análise de teoria de jogos: {e}", "red")
+            import traceback
+            traceback.print_exc()
+
+    def time_series_analysis(self):
+        """Executa análise de séries temporais."""
+        self.print_header("ANÁLISE DE SÉRIES TEMPORAIS")
+        
+        if not self.load_data():
+            return
+        
+        print("🕒 Executando análise temporal avançada...")
+        print("📊 Esta análise pode levar alguns minutos...")
+        
+        try:
+            # Gerar relatório completo de séries temporais
+            report = self.time_series_analyzer.generate_time_series_report(self.historical_data)
+            
+            # Mostrar resumo executivo
+            summary = report['summary']
+            print(f"\n📋 RESUMO EXECUTIVO:")
+            print(f"   📊 Sorteios analisados: {summary['total_sorteios_analisados']:,}")
+            print(f"   📅 Período: {summary['periodo_analise']['inicio']} a {summary['periodo_analise']['fim']}")
+            print(f"   📈 Tendência geral: {summary['tendencia_geral']}")
+            print(f"   🔄 Sazonalidade detectada: {'✅ Sim' if summary['sazonalidade_detectada'] else '❌ Não'}")
+            print(f"   ⚠️ Outliers detectados: {summary['outliers_detectados']}")
+            print(f"   📊 Qualidade da decomposição: {summary['qualidade_decomposicao']}")
+            
+            # Análise de decomposição
+            decomp = report['decomposition']
+            print(f"\n🧬 DECOMPOSIÇÃO TEMPORAL:")
+            print(f"   📈 Inclinação da tendência: {decomp['trend_slope']:.4f}")
+            print(f"   🔄 Força sazonal: {decomp['seasonal_strength']:.3f}")
+            print(f"   📊 Nível de ruído: {decomp['noise_level']:.2f}")
+            
+            # Análise de tendências
+            trends = report['trend_analysis']
+            print(f"\n📈 ANÁLISE DE TENDÊNCIAS:")
+            for metric, data in trends.items():
+                if 'trend_direction' in data:
+                    direction = data['trend_direction']
+                    strength = data.get('trend_strength', 0)
+                    significant = data.get('significant_trend', False)
+                    sig_icon = "✅" if significant else "❌"
+                    
+                    metric_names = {
+                        'sum_numbers': 'Soma dos números',
+                        'max_number': 'Número máximo',
+                        'even_count': 'Contagem de pares',
+                        'range_numbers': 'Amplitude'
+                    }
+                    
+                    print(f"   📊 {metric_names.get(metric, metric)}: {direction} (força: {strength:.3f}) {sig_icon}")
+            
+            # Análise sazonal
+            seasonal = report['seasonal_analysis']
+            if 'summary' in seasonal:
+                season_summary = seasonal['summary']
+                print(f"\n🗓️ PADRÕES SAZONAIS:")
+                print(f"   📈 Mês com maior soma média: {season_summary['highest_sum_month']}")
+                print(f"   📉 Mês com menor soma média: {season_summary['lowest_sum_month']}")
+                print(f"   📊 Mês mais variável: {season_summary['most_variable_month']}")
+                print(f"   📏 Mês menos variável: {season_summary['least_variable_month']}")
+            
+            # Detecção de ciclos
+            cycles = report['cycles_and_patterns']
+            print(f"\n🔄 DETECÇÃO DE CICLOS:")
+            cycle_found = False
+            for metric, data in cycles.items():
+                if data['dominant_periods']:
+                    periods = data['dominant_periods'][:3]  # Top 3
+                    print(f"   📊 {metric}: períodos dominantes {[f'{p:.1f}' for p in periods]} semanas")
+                    cycle_found = True
+            
+            if not cycle_found:
+                print("   📊 Nenhum ciclo dominante detectado nos dados")
+            
+            # Anomalias
+            anomalies = report['anomaly_detection']
+            print(f"\n⚠️ DETECÇÃO DE ANOMALIAS:")
+            total_outliers = sum(data['outlier_count'] for data in anomalies.values())
+            total_extremes = sum(data['extreme_count'] for data in anomalies.values())
+            
+            print(f"   📊 Total de outliers: {total_outliers}")
+            print(f"   🔴 Anomalias extremas: {total_extremes}")
+            
+            if total_outliers > 0:
+                print(f"   📈 Percentual de outliers: {(total_outliers / len(self.historical_data)) * 100:.2f}%")
+            
+            # Gráficos gerados
+            plots = report['generated_plots']
+            if plots:
+                print(f"\n📊 GRÁFICOS GERADOS:")
+                for plot in plots:
+                    filename = plot.split('\\')[-1] if '\\' in plot else plot.split('/')[-1]
+                    print(f"   📈 {filename}")
+                self.print_colored(f"✅ {len(plots)} gráficos salvos em data/plots/time_series/", "green")
+            else:
+                print(f"\n📊 Gráficos não puderam ser gerados (verifique dependências)")
+            
+            # Qualidade dos dados
+            data_quality = report['data_quality']
+            print(f"\n📋 QUALIDADE DOS DADOS:")
+            print(f"   ✅ Completude: {data_quality['completeness'] * 100:.1f}%")
+            print(f"   📊 Consistência: {data_quality['consistency']}")
+            print(f"   📅 Cobertura temporal: {data_quality['temporal_coverage']}")
+            
+        except Exception as e:
+            self.print_colored(f"❌ Erro na análise temporal: {e}", "red")
+            print("💡 Dica: Verifique se pandas e matplotlib estão instalados")
     
     def configure_game_cost(self):
         """Configura o valor atual do jogo da Mega Sena."""
@@ -486,6 +773,37 @@ class MegaSenaApp:
         if not self.load_data():
             return
         
+        # Perguntar quantas dezenas o usuário quer jogar
+        print("🔮 Configuração das Previsões")
+        print("=" * 40)
+        print("A Mega Sena permite jogar de 6 a 15 números.")
+        print("Mais números = mais chances, mas custa mais caro.")
+        print()
+        
+        while True:
+            try:
+                dezenas_str = input("🎯 Quantas dezenas por jogo? (6-15): ").strip()
+                dezenas = int(dezenas_str)
+                
+                if 6 <= dezenas <= 15:
+                    break
+                else:
+                    self.print_colored("❌ Número inválido! Digite um valor entre 6 e 15.", "red")
+                    
+            except ValueError:
+                self.print_colored("❌ Por favor, digite um número válido!", "red")
+        
+        print(f"\n✅ Configurado para gerar jogos com {dezenas} números")
+        
+        # Calcular custo do jogo
+        cost_info = self.probability_analyzer.calculate_game_cost(dezenas)
+        if cost_info:
+            print(f"💰 Custo por jogo: R$ {cost_info['total_cost']:.2f}")
+            print(f"📊 Combinações por jogo: {cost_info['combinations']:,}")
+            if cost_info['combinations'] > 1:
+                print(f"💡 Cada jogo tem {cost_info['combinations']}x mais chances que o jogo simples!")
+            print()
+        
         print("🔮 MÉTODOS DE PREVISÃO:")
         print("1. 🎲 Aleatório ponderado (baseado em frequências)")
         print("2. 🔥 Números quentes (mais frequentes recentemente)")
@@ -500,8 +818,12 @@ class MegaSenaApp:
             num_predictions = int(input("Quantas previsões gerar (1-10)? ") or "5")
             num_predictions = max(1, min(10, num_predictions))
             
+            # Configurar o número de dezenas no analisador avançado
+            if hasattr(self.advanced_analytics, 'set_target_numbers'):
+                self.advanced_analytics.set_target_numbers(dezenas)
+            
             predictions = self.advanced_analytics.generate_predictions(
-                self.historical_data, method, num_predictions
+                self.historical_data, method, num_predictions, target_numbers=dezenas
             )
             
             method_names = {
@@ -512,15 +834,25 @@ class MegaSenaApp:
             }
             
             print(f"\n🎯 PREVISÕES - MÉTODO: {method_names[method]}")
+            print(f"🎲 Jogos com {dezenas} números cada")
             print("=" * 50)
             
             for i, prediction in enumerate(predictions, 1):
                 numbers_str = " - ".join(f"{num:02d}" for num in prediction)
                 print(f"   🎫 Jogo {i}: {numbers_str}")
             
-            # Adicionar análise das previsões
+            # Mostrar custo total
+            if cost_info:
+                total_cost = cost_info['total_cost'] * num_predictions
+                total_combinations = cost_info['combinations'] * num_predictions
+                print(f"\n💰 RESUMO FINANCEIRO:")
+                print(f"   💸 Custo por jogo: R$ {cost_info['total_cost']:.2f}")
+                print(f"   💳 Custo total ({num_predictions} jogos): R$ {total_cost:.2f}")
+                print(f"   🎯 Total de combinações: {total_combinations:,}")
+                print(f"   📈 Fator de melhoria: {cost_info['combinations']}x por jogo")
+            
             # Executar análise histórica das previsões
-            print(f"\n� ANÁLISE HISTÓRICA DAS PREVISÕES:")
+            print(f"\n📊 ANÁLISE HISTÓRICA DAS PREVISÕES:")
             history_analysis = self.analyze_prediction_history(predictions)
             
             # Mostrar se alguma combinação já foi sorteada
@@ -675,10 +1007,14 @@ class MegaSenaApp:
                 elif choice == "5":
                     self.generate_predictions()
                 elif choice == "6":
-                    self.complete_report()
+                    self.time_series_analysis()
                 elif choice == "7":
-                    self.show_data_info()
+                    self.game_theory_analysis()
                 elif choice == "8":
+                    self.complete_report()
+                elif choice == "9":
+                    self.show_data_info()
+                elif choice == "10":
                     self.configure_game_cost()
                 else:
                     self.print_colored("❌ Opção inválida! Tente novamente.", "red")

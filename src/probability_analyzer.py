@@ -185,6 +185,37 @@ class MegaSenaProbabilityAnalyzer:
         """Retorna o valor atual do jogo."""
         return self.cost_per_game
     
+    def calculate_game_cost(self, num_numbers: int) -> Dict:
+        """Calcula o custo total baseado no número de dezenas escolhidas."""
+        import math
+        
+        # Calcular número de combinações C(num_numbers, 6)
+        if num_numbers < 6 or num_numbers > 15:
+            return None
+        
+        def combinations(n, k):
+            """Calcula combinações C(n,k)."""
+            if k > n or k < 0:
+                return 0
+            if k == 0 or k == n:
+                return 1
+            
+            result = 1
+            for i in range(min(k, n - k)):
+                result = result * (n - i) // (i + 1)
+            return result
+        
+        num_combinations = combinations(num_numbers, 6)
+        total_cost = num_combinations * self.cost_per_game
+        
+        return {
+            'numbers_selected': num_numbers,
+            'combinations': num_combinations,
+            'cost_per_game': self.cost_per_game,
+            'total_cost': total_cost,
+            'improvement_factor': num_combinations  # Quantas vezes mais chances que jogo simples
+        }
+    
     def analyze_repetitions(self, historical_data: List[List[int]]) -> Dict:
         """Analisa padrões de repetição entre sorteios."""
         if len(historical_data) < 2:

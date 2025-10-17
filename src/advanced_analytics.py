@@ -353,7 +353,8 @@ class MegaSenaAdvancedAnalytics:
     def generate_predictions(self, 
                            historical_data: List[List[int]], 
                            method: str = "weighted_random",
-                           num_predictions: int = 5) -> List[List[int]]:
+                           num_predictions: int = 5,
+                           target_numbers: int = 6) -> List[List[int]]:
         """
         Gera previsões baseadas em análise histórica.
         
@@ -362,6 +363,9 @@ class MegaSenaAdvancedAnalytics:
         - hot_numbers: Números mais frequentes recentemente
         - cold_numbers: Números com maior atraso
         - balanced: Combinação de estratégias
+        
+        Args:
+            target_numbers: Quantidade de números por jogo (6-15)
         """
         if not historical_data:
             return []
@@ -370,21 +374,21 @@ class MegaSenaAdvancedAnalytics:
         
         for _ in range(num_predictions):
             if method == "weighted_random":
-                prediction = self._weighted_random_prediction(historical_data)
+                prediction = self._weighted_random_prediction(historical_data, target_numbers)
             elif method == "hot_numbers":
-                prediction = self._hot_numbers_prediction(historical_data)
+                prediction = self._hot_numbers_prediction(historical_data, target_numbers)
             elif method == "cold_numbers":
-                prediction = self._cold_numbers_prediction(historical_data)
+                prediction = self._cold_numbers_prediction(historical_data, target_numbers)
             elif method == "balanced":
-                prediction = self._balanced_prediction(historical_data)
+                prediction = self._balanced_prediction(historical_data, target_numbers)
             else:
-                prediction = sorted(random.sample(range(1, 61), 6))
+                prediction = sorted(random.sample(range(1, 61), target_numbers))
             
             predictions.append(prediction)
         
         return predictions
     
-    def _weighted_random_prediction(self, historical_data: List[List[int]]) -> List[int]:
+    def _weighted_random_prediction(self, historical_data: List[List[int]], target_numbers: int = 6) -> List[int]:
         """Predição baseada em frequências ponderadas."""
         all_numbers = [num for draw in historical_data for num in draw]
         frequency_counter = Counter(all_numbers)
@@ -395,33 +399,33 @@ class MegaSenaAdvancedAnalytics:
             weight = frequency_counter.get(num, 1)  # Pelo menos peso 1
             weighted_numbers.extend([num] * weight)
         
-        # Selecionar 6 números únicos
+        # Selecionar números únicos
         selected = []
-        while len(selected) < 6:
+        while len(selected) < target_numbers:
             num = random.choice(weighted_numbers)
             if num not in selected:
                 selected.append(num)
         
         return sorted(selected)
     
-    def _hot_numbers_prediction(self, historical_data: List[List[int]]) -> List[int]:
+    def _hot_numbers_prediction(self, historical_data: List[List[int]], target_numbers: int = 6) -> List[int]:
         """Predição baseada nos números mais quentes (últimos 20 sorteios)."""
         recent_data = historical_data[-20:] if len(historical_data) >= 20 else historical_data
         recent_numbers = [num for draw in recent_data for num in draw]
         frequency_counter = Counter(recent_numbers)
         
         # Pegar os mais frequentes e completar aleatoriamente se necessário
-        hot_numbers = [num for num, count in frequency_counter.most_common(10)]
+        hot_numbers = [num for num, count in frequency_counter.most_common(target_numbers * 2)]
         
-        selected = random.sample(hot_numbers, min(6, len(hot_numbers)))
-        while len(selected) < 6:
+        selected = random.sample(hot_numbers, min(target_numbers, len(hot_numbers)))
+        while len(selected) < target_numbers:
             num = random.randint(1, 60)
             if num not in selected:
                 selected.append(num)
         
         return sorted(selected)
     
-    def _cold_numbers_prediction(self, historical_data: List[List[int]]) -> List[int]:
+    def _cold_numbers_prediction(self, historical_data: List[List[int]], target_numbers: int = 6) -> List[int]:
         """Predição baseada nos números mais frios (maior atraso)."""
         # Calcular atrasos
         delays = {}
@@ -437,21 +441,26 @@ class MegaSenaAdvancedAnalytics:
         cold_numbers = sorted(delays.keys(), key=lambda x: delays[x], reverse=True)
         
         # Selecionar alguns dos mais atrasados
-        selected = cold_numbers[:6]
+        selected = cold_numbers[:target_numbers]
         
         return sorted(selected)
     
-    def _balanced_prediction(self, historical_data: List[List[int]]) -> List[int]:
+    def _balanced_prediction(self, historical_data: List[List[int]], target_numbers: int = 6) -> List[int]:
         """Predição balanceada combinando múltiplas estratégias."""
-        # 2 números quentes
-        hot_pred = self._hot_numbers_prediction(historical_data)[:2]
+        # Distribuir proporcionalmente
+        hot_count = target_numbers // 3
+        cold_count = target_numbers // 3
+        random_count = target_numbers - hot_count - cold_count
         
-        # 2 números frios
-        cold_pred = self._cold_numbers_prediction(historical_data)[:2]
+        # Números quentes
+        hot_pred = self._hot_numbers_prediction(historical_data, hot_count*2)[:hot_count]
         
-        # 2 números aleatórios ponderados
+        # Números frios
+        cold_pred = self._cold_numbers_prediction(historical_data, cold_count*2)[:cold_count]
+        
+        # Números aleatórios ponderados
         remaining = []
-        while len(remaining) < 2:
+        while len(remaining) < random_count:
             num = random.randint(1, 60)
             if num not in hot_pred and num not in cold_pred and num not in remaining:
                 remaining.append(num)
